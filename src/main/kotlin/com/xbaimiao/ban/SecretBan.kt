@@ -13,10 +13,12 @@ import com.xbaimiao.easylib.util.registerListener
 import com.xbaimiao.easylib.util.submit
 import org.bukkit.Bukkit
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
+import java.util.*
 import java.util.concurrent.Executors
 import kotlin.random.Random
 
@@ -75,12 +77,13 @@ class SecretBan : EasyPlugin(), Listener {
             val start = System.currentTimeMillis()
             while (player.isOnline && System.currentTimeMillis() - start < 1000) {
                 try {
-                    val packet = PacketContainer(PacketType.Play.Server.EXPLOSION)
+                    val packet = PacketContainer(PacketType.Play.Server.SPAWN_ENTITY)
+                    packet.integers.write(0, Random.nextInt())
+                    packet.uuiDs.write(0, UUID.randomUUID())
                     packet.doubles.write(0, player.location.x.offset())
                     packet.doubles.write(1, player.location.y.offset())
                     packet.doubles.write(2, player.location.z.offset())
-                    packet.blockPositionCollectionModifier.write(0, arrayListOf())
-                    packet.float.write(0, 100.0f)
+                    packet.entityTypeModifier.write(0, EntityType.FALLING_BLOCK)
                     ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet, null, true)
                 } catch (e: Throwable) {
                     e.printStackTrace()
