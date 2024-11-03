@@ -1,0 +1,3 @@
+secretban-unban: "&a已解除对 {0} 的封禁"
+secretban-not-ban: "&a{0} 没有被封禁"
+secretban-ban: "&a封禁玩家 {0} 时间 {1}"
